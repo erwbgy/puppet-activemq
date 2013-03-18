@@ -1,0 +1,31 @@
+activemq::files:
+  conf/activemq.xml:
+    mode:     '0440'
+    source:   'puppet:///files/activemq/myapp/activemq.xml'
+
+activemq::templates:
+  conf/activemq-users.xml:
+    mode:     '0440'
+    template: '/var/lib/puppet/files/activemq/myapp/activemq-users.xml.erb'
+
+activemq::group:     'activemq'
+
+activemq::java_home: '/usr/java/jdk1.7.0_07'
+
+activemq::java_opts: '-XX:MaxPermSize=512m'
+
+activemq::min_mem:   '-Xms1536m'
+activemq::max_mem:   '-Xms1536m'
+
+activemq::version:   '5.8.0'
+
+activemq::instances:
+  activemq1:
+    basedir:      '/apps/activemq1'
+    bind_address: %{ipaddress_eth0_1}
+    logdir:       '/apps/activemq1/logs'
+  activemq2:
+    basedir:      '/apps/activemq2'
+    bind_address: %{ipaddress_eth0_2}
+    logdir:       '/apps/activemq2/logs'
+
