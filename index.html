@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Puppet-activemq : " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Puppet-activemq</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/erwbgy/puppet-activemq">View on GitHub</a>
+
+          <h1 id="project_title">Puppet-activemq</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/erwbgy/puppet-activemq/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/erwbgy/puppet-activemq/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>puppet-activemq</h1>
+
+<p>Puppet module to install Apache Tomcat and run instances as Runit services
+under one or more users.</p>
+
+<p>The recommended usage is to place the configuration is hiera and just:</p>
+
+<pre><code>include activemq
+</code></pre>
+
+<p>Example hiera config:</p>
+
+<pre><code>activemq::files:
+  conf/activemq.xml:
+    mode:     '0440'
+    source:   'puppet:///files/activemq/myapp/activemq.xml'
+
+activemq::templates:
+  conf/activemq-users.xml:
+    mode:     '0440'
+    template: '/var/lib/puppet/files/activemq/myapp/activemq-users.xml.erb'
+
+activemq::group:     'activemq'
+
+activemq::java_home: '/usr/java/jdk1.7.0_09'
+
+activemq::java_opts: '-Xms1536m -Xmx1536m -XX:MaxPermSize=512m'
+
+activemq::version:   '5.8.0'
+
+activemq::instances:
+  activemq1:
+    basedir:      '/apps/activemq1'
+    bind_address: %{ipaddress_eth0_1}
+    logdir:       '/apps/activemq1/logs'
+  activemq2:
+    basedir:      '/apps/activemq2'
+    bind_address: %{ipaddress_eth0_2}
+    logdir:       '/apps/activemq2/logs'
+</code></pre>
+
+<h2>activemq parameters</h2>
+
+<p><em>basedir</em>: The base installation directory. Default: '/opt/activemq'</p>
+
+<p><em>bind_address</em>: The IP address listen sockets are bound to. Default: $::fqdn</p>
+
+<p><em>files</em>: A hash of configuration files to install - see below</p>
+
+<p><em>group</em>: The user''s primary group. Default: 'activemq',</p>
+
+<p><em>java_home</em>: The base directory of the JDK installation to be used. Default:
+'/usr/java/latest',</p>
+
+<p><em>java_opts</em>: Additional java command-line options to pass to the startup script</p>
+
+<p><em>logdir</em>: The base log directory. Default: '/var/logs/activemq'</p>
+
+<p><em>min_mem</em>: The minimum heap size allocated by the JVM. Default: 1024m</p>
+
+<p><em>max_mem</em>: The maximum heap size allocated by the JVM. Default: 2048m</p>
+
+<p><em>mode</em>: The permissions to create files with (eg. 0444).</p>
+
+<p><em>templates</em>: A hash of configuration templates to process and install - see below</p>
+
+<p><em>version</em>: The version of the product to install (eg. 5.8.0). <strong>Required</strong>.</p>
+
+<p><em>workspace</em>: A temporary directory to unpack install tarballs into. Default:
+'/root/activemq'</p>
+
+<h2>activemq::instance parameters</h2>
+
+<p><em>title</em>: The user the Tomcat instance runs as</p>
+
+<p>Plus all of the parameters specified in 'activemq parameters' above</p>
+
+<h2>Config files</h2>
+
+<p>Files or templates for each of the Tomcat instances can be delivered via
+Puppet.  The former are delivered as-is while the latter are processed as ERB
+templates before being delivered.</p>
+
+<p>For example configuration could be delivered using for instances running as the
+activemq1 and activemq2 users with:</p>
+
+<pre><code>activemq::files:
+  conf/activemq-users.xml:
+    source: 'puppet:///files/activemq/dev/activemq-users.xml'
+
+activemq:
+  activemq1:
+    templates:
+      conf/activemq.xml:
+        template: '/etc/puppet/templates/activemq/dev1/activemq.xml.erb'
+  activemq2:
+    templates:
+      conf/activemq.xml:
+        template: '/etc/puppet/templates/activemq/dev2/activemq.xml.erb'
+</code></pre>
+
+<p>Values set at the activemq level as set for all instances so both the activemq1 and
+activemq2 instance would get the same activemq-users.xml file.  Each instance would
+get their own activemq.xml file based on the template specified with instance
+variables (like basedir and logdir) substituted.</p>
+
+<p>All files are relative to the product installation.  For example if the product
+installation is '/opt/activemq/apache-activemq-5.8.0' then the full path to the
+'activemq-users.xml' file would be
+'/opt/activemq/apache-activemq-5.8.0/conf/activemq-users.xml'.</p>
+
+<p>Note that the path specified by the 'template' parameter is on the Puppet
+master.</p>
+
+<h2>Product files</h2>
+
+<p>Place the product zip files (eg. 'apache-activemq-5.8.0.tar.gz') under a
+'activemq' directory of the 'files' file store.  For example if
+/etc/puppet/fileserver.conf has:</p>
+
+<pre><code>[files]
+path /var/lib/puppet/files
+</code></pre>
+
+<p>then put the zip files in /var/lib/puppet/files/activemq.  Any files specified
+with the 'files' parameter can also be placed in this directory.</p>
+
+<h2>Support</h2>
+
+<p>License: Apache License, Version 2.0</p>
+
+<p>GitHub URL: <a href="https://github.com/erwbgy/puppet-activemq">https://github.com/erwbgy/puppet-activemq</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Puppet-activemq maintained by <a href="https://github.com/erwbgy">erwbgy</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-37513727-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
