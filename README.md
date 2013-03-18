@@ -90,11 +90,11 @@ activemq1 and activemq2 users with:
       activemq1:
         templates:
           conf/activemq.xml:
-            template: 'puppet:///files/activemq/dev1/activemq.xml.erb'
+            template: '/etc/puppet/templates/activemq/dev1/activemq.xml.erb'
       activemq2:
         templates:
           conf/activemq.xml:
-            template: 'puppet:///files/activemq/dev2/activemq.xml.erb'
+            template: '/etc/puppet/templates/activemq/dev2/activemq.xml.erb'
 
 Values set at the activemq level as set for all instances so both the activemq1 and
 activemq2 instance would get the same activemq-users.xml file.  Each instance would
