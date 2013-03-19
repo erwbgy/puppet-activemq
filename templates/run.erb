@@ -5,5 +5,7 @@ export ACTIVEMQ_BASE=$ACTIVEMQ_HOME
 mkdir -p $ACTIVEMQ_BASE/temp
 export ACTIVEMQ_OPTS="-Xms<%= @min_mem %> -Xmx<%= @max_mem %> -Djava.io.tmpdir=$ACTIVEMQ_BASE/temp <%= @java_opts %>"
 export JAVA_HOME=<%= @java_home %>
+# Ensure we have one process running in the foreground
+perl -pi -e 's/DOIT_PREFIX="sh -c "/DOIT_PREFIX="exec sh -c "/' $ACTIVEMQ_HOME/bin/activemq
 cd <%= @product_dir %>
 exec <% if @cpu_affinity %>taskset -c <%= @cpu_affinity %> <% end %>$ACTIVEMQ_HOME/bin/activemq console <%= @config_file %>

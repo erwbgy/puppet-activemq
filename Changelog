@@ -8,6 +8,9 @@
 
 * Enable CPU affinity to be set to only run processes on specific CPU cores
 
+* Modify the activemq start script to ensure that we have one process running
+in the foreground
+
 0.2.0:
 
 * Removed bind_address and replaced it with a config hash to set variables
