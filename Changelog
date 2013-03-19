@@ -1,10 +1,12 @@
-0.2.1:
+0.3.0:
 
 * Allow the configuration file to be specified and pass it on the command-line
 
 * Set the java.io.tmpdir to be under the instance directory
 
 * Start in the product directory so relative paths work as expected
+
+* Enable CPU affinity to be set to only run processes on specific CPU cores
 
 0.2.0:
 

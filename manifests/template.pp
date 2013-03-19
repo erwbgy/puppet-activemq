@@ -2,6 +2,7 @@ define activemq::template(
   $basedir,
   $config,
   $config_file,
+  $cpu_affinity,
   $down,
   $group,
   $java_home,

@@ -14,6 +14,8 @@ Example hiera config:
 
     activemq::config_file: 'xbean:conf/activemq.xml'
 
+    activemq::cpu_affinity: '0,1'
+
     activemq::files:
       conf/activemq.xml:
         mode:     '0440'
@@ -50,6 +52,9 @@ Example hiera config:
 when templates are processed.
 
 *config_file*: The configuration file to use. Default: 'xbean:conf/activemq.xml'
+
+*cpu_affinity*: Enable CPU affinity to be set to only run processes on specific
+CPU cores - for example '0,1' to only run processes on the first two cores.
 
 *files*: A hash of configuration files to install - see below
 
