@@ -1,6 +1,7 @@
 define activemq::template(
   $basedir,
   $config,
+  $config_file,
   $down,
   $group,
   $java_home,

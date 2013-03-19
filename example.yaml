@@ -1,6 +1,8 @@
 activemq::config:
   listen_hostname: 'localhost'
 
+activemq::config_file: 'xbean:conf/activemq-throughput-np.xml'
+
 activemq::files:
   conf/activemq.xml:
     mode:     '0440'

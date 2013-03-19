@@ -1,6 +1,7 @@
 define activemq::instance (
   $basedir          = $::activemq::basedir,
   $config           = $::activemq::config,
+  $config_file      = $::activemq::config_file,
   $down             = $::activemq::down,
   $files            = $::activemq::files,
   $group            = $::activemq::group,
@@ -53,6 +54,7 @@ define activemq::instance (
     {
       basedir      => $basedir,
       config       => $config,
+      config_file  => $config_file,
       down         => $down,
       group        => $group,
       java_home    => $java_home,
@@ -78,6 +80,7 @@ define activemq::instance (
     java_home    => $java_home,
     java_opts    => $java_opts,
     config       => $config,
+    config_file  => $config_file,
     min_mem      => $min_mem,
     max_mem      => $max_mem,
     down         => $down,

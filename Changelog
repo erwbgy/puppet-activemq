@@ -1,3 +1,11 @@
+0.2.1:
+
+* Allow the configuration file to be specified and pass it on the command-line
+
+* Set the java.io.tmpdir to be under the instance directory
+
+* Start in the product directory so relative paths work as expected
+
 0.2.0:
 
 * Removed bind_address and replaced it with a config hash to set variables

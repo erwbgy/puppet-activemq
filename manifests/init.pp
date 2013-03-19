@@ -2,6 +2,7 @@ class activemq (
   $version,
   $basedir          = '/opt/activemq',
   $config           = {},
+  $config_file      = 'xbean:conf/activemq.xml',
   $down             = false,
   $files            = {},
   $group            = 'activemq',

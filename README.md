@@ -12,6 +12,8 @@ Example hiera config:
     activemq::config:
       hostname: 'localhost'
 
+    activemq::config_file: 'xbean:conf/activemq.xml'
+
     activemq::files:
       conf/activemq.xml:
         mode:     '0440'
@@ -47,6 +49,8 @@ Example hiera config:
 *config*: A hash of additional configuration variables that will be set
 when templates are processed.
 
+*config_file*: The configuration file to use. Default: 'xbean:conf/activemq.xml'
+
 *files*: A hash of configuration files to install - see below
 
 *group*: The user''s primary group. Default: 'activemq',
@@ -77,7 +81,7 @@ when templates are processed.
 
 Plus all of the parameters specified in 'activemq parameters' above
 
-## Config files
+## Config files and templates
 
 Files or templates for each of the ActiveMQ instances can be delivered via
 Puppet.  The former are delivered as-is while the latter are processed as ERB
