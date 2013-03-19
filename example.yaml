@@ -1,3 +1,6 @@
+activemq::config:
+  listen_hostname: 'localhost'
+
 activemq::files:
   conf/activemq.xml:
     mode:     '0440'
@@ -22,10 +25,8 @@ activemq::version:   '5.8.0'
 activemq::instances:
   activemq1:
     basedir:      '/apps/activemq1'
-    bind_address: %{ipaddress_eth0_1}
     logdir:       '/apps/activemq1/logs'
   activemq2:
     basedir:      '/apps/activemq2'
-    bind_address: %{ipaddress_eth0_2}
     logdir:       '/apps/activemq2/logs'
 

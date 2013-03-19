@@ -9,6 +9,9 @@ The recommended usage is to place the configuration is hiera and just:
 
 Example hiera config:
 
+    activemq::config:
+      hostname: 'locahost'
+
     activemq::files:
       conf/activemq.xml:
         mode:     '0440'
@@ -30,18 +33,19 @@ Example hiera config:
     activemq::instances:
       activemq1:
         basedir:      '/apps/activemq1'
-        bind_address: %{ipaddress_eth0_1}
+        config:
+          hostname:   %{ipaddress_eth0_1}
         logdir:       '/apps/activemq1/logs'
       activemq2:
         basedir:      '/apps/activemq2'
-        bind_address: %{ipaddress_eth0_2}
         logdir:       '/apps/activemq2/logs'
 
 ## activemq parameters
 
 *basedir*: The base installation directory. Default: '/opt/activemq'
 
-*bind_address*: The IP address listen sockets are bound to. Default: $::fqdn
+*config*: A hash of additional configuration variables that will be set
+when templates are processed.
 
 *files*: A hash of configuration files to install - see below
 
@@ -82,6 +86,9 @@ templates before being delivered.
 For example configuration could be delivered using for instances running as the
 activemq1 and activemq2 users with:
 
+    activemq::config:
+      hostname: 'localhost'
+
     activemq::files:
       conf/activemq-users.xml:
         source: 'puppet:///files/activemq/dev/activemq-users.xml'
@@ -96,20 +103,30 @@ activemq1 and activemq2 users with:
           conf/activemq.xml:
             template: '/etc/puppet/templates/activemq/dev2/activemq.xml.erb'
 
-Values set at the activemq level as set for all instances so both the activemq1 and
-activemq2 instance would get the same activemq-users.xml file.  Each instance would
-get their own activemq.xml file based on the template specified with instance
-variables (like basedir and logdir) substituted.
+Values set at the activemq level as set for all instances so both the activemq1
+and activemq2 instance would get the same activemq-users.xml file.  Each
+instance would get their own activemq.xml file based on the template specified
+with instance variables (like basedir and logdir) and config variables (like
+hostname) substituted.
 
-All files are relative to the product installation.  For example if the product
-installation is '/opt/activemq/apache-activemq-5.8.0' then the full path to the
-'activemq-users.xml' file would be
+For example:
+
+    <broker ... dataDirectory="<%= @basedir %>/data" persistent="false" ...
+    ...
+    <transportConnectors>
+      <transportConnector name="nio" uri="nio://<%= @config['hostname'] %>:61618"/>
+    </transportConnectors>
+    ...
+
+All files and templates are relative to the product installation.  For example
+if the product installation is '/opt/activemq/apache-activemq-5.8.0' then the
+full path to the 'activemq-users.xml' file would be
 '/opt/activemq/apache-activemq-5.8.0/conf/activemq-users.xml'.
 
 Note that the path specified by the 'template' parameter is on the Puppet
 master.
 
-## Product files
+## Product zip files
 
 Place the product zip files (eg. 'apache-activemq-5.8.0.tar.gz') under a
 'activemq' directory of the 'files' file store.  For example if

@@ -1,6 +1,6 @@
 define activemq::service (
   $basedir,
-  $bind_address,
+  $config,
   $down,
   $group,
   $logdir,

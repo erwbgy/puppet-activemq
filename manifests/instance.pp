@@ -1,6 +1,6 @@
 define activemq::instance (
   $basedir          = $::activemq::basedir,
-  $bind_address     = $::activemq::bind_address,
+  $config           = $::activemq::config,
   $down             = $::activemq::down,
   $files            = $::activemq::files,
   $group            = $::activemq::group,
@@ -52,7 +52,7 @@ define activemq::instance (
   create_resources( 'activemq::template', $templates,
     {
       basedir      => $basedir,
-      bind_address => $bind_address,
+      config       => $config,
       down         => $down,
       group        => $group,
       java_home    => $java_home,
@@ -77,7 +77,7 @@ define activemq::instance (
     version      => $version,
     java_home    => $java_home,
     java_opts    => $java_opts,
-    bind_address => $bind_address,
+    config       => $config,
     min_mem      => $min_mem,
     max_mem      => $max_mem,
     down         => $down,

@@ -1,7 +1,7 @@
 class activemq (
   $version,
   $basedir          = '/opt/activemq',
-  $bind_address     = $::fqdn,
+  $config           = {},
   $down             = false,
   $files            = {},
   $group            = 'activemq',
