@@ -33,7 +33,7 @@
       <section id="main_content" class="inner">
         <h1>puppet-activemq</h1>
 
-<p>Puppet module to install Apache Tomcat and run instances as Runit services
+<p>Puppet module to install Apache ActiveMQ and run instances as Runit services
 under one or more users.</p>
 
 <p>The recommended usage is to place the configuration is hiera and just:</p>
@@ -43,7 +43,10 @@ under one or more users.</p>
 
 <p>Example hiera config:</p>
 
-<pre><code>activemq::files:
+<pre><code>activemq::config:
+  hostname: 'localhost'
+
+activemq::files:
   conf/activemq.xml:
     mode:     '0440'
     source:   'puppet:///files/activemq/myapp/activemq.xml'
@@ -64,11 +67,11 @@ activemq::version:   '5.8.0'
 activemq::instances:
   activemq1:
     basedir:      '/apps/activemq1'
-    bind_address: %{ipaddress_eth0_1}
+    config:
+      hostname:   %{ipaddress_eth0_1}
     logdir:       '/apps/activemq1/logs'
   activemq2:
     basedir:      '/apps/activemq2'
-    bind_address: %{ipaddress_eth0_2}
     logdir:       '/apps/activemq2/logs'
 </code></pre>
 
@@ -76,7 +79,8 @@ activemq::instances:
 
 <p><em>basedir</em>: The base installation directory. Default: '/opt/activemq'</p>
 
-<p><em>bind_address</em>: The IP address listen sockets are bound to. Default: $::fqdn</p>
+<p><em>config</em>: A hash of additional configuration variables that will be set
+when templates are processed.</p>
 
 <p><em>files</em>: A hash of configuration files to install - see below</p>
 
@@ -104,20 +108,23 @@ activemq::instances:
 
 <h2>activemq::instance parameters</h2>
 
-<p><em>title</em>: The user the Tomcat instance runs as</p>
+<p><em>title</em>: The user the ActiveMQ instance runs as</p>
 
 <p>Plus all of the parameters specified in 'activemq parameters' above</p>
 
 <h2>Config files</h2>
 
-<p>Files or templates for each of the Tomcat instances can be delivered via
+<p>Files or templates for each of the ActiveMQ instances can be delivered via
 Puppet.  The former are delivered as-is while the latter are processed as ERB
 templates before being delivered.</p>
 
 <p>For example configuration could be delivered using for instances running as the
 activemq1 and activemq2 users with:</p>
 
-<pre><code>activemq::files:
+<pre><code>activemq::config:
+  hostname: 'localhost'
+
+activemq::files:
   conf/activemq-users.xml:
     source: 'puppet:///files/activemq/dev/activemq-users.xml'
 
@@ -132,20 +139,31 @@ activemq:
         template: '/etc/puppet/templates/activemq/dev2/activemq.xml.erb'
 </code></pre>
 
-<p>Values set at the activemq level as set for all instances so both the activemq1 and
-activemq2 instance would get the same activemq-users.xml file.  Each instance would
-get their own activemq.xml file based on the template specified with instance
-variables (like basedir and logdir) substituted.</p>
+<p>Values set at the activemq level as set for all instances so both the activemq1
+and activemq2 instance would get the same activemq-users.xml file.  Each
+instance would get their own activemq.xml file based on the template specified
+with instance variables (like basedir and logdir) and config variables (like
+hostname above) substituted.</p>
 
-<p>All files are relative to the product installation.  For example if the product
-installation is '/opt/activemq/apache-activemq-5.8.0' then the full path to the
-'activemq-users.xml' file would be
+<p>For example:</p>
+
+<pre><code>&lt;broker ... dataDirectory="&lt;%= @basedir %&gt;/data" persistent="false" ...
+...
+&lt;transportConnectors&gt;
+  &lt;transportConnector name="nio" uri="nio://&lt;%= @config['hostname'] %&gt;:61618"/&gt;
+&lt;/transportConnectors&gt;
+...
+</code></pre>
+
+<p>All files and templates are relative to the product installation.  For example
+if the product installation is '/opt/activemq/apache-activemq-5.8.0' then the
+full path to the 'activemq-users.xml' file would be
 '/opt/activemq/apache-activemq-5.8.0/conf/activemq-users.xml'.</p>
 
 <p>Note that the path specified by the 'template' parameter is on the Puppet
 master.</p>
 
-<h2>Product files</h2>
+<h2>Product zip files</h2>
 
 <p>Place the product zip files (eg. 'apache-activemq-5.8.0.tar.gz') under a
 'activemq' directory of the 'files' file store.  For example if
