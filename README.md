@@ -3,14 +3,14 @@
 Puppet module to install Apache ActiveMQ and run instances as Runit services
 under one or more users.
 
-The recommended usage is to place the configuration is hiera and just:
+The recommended usage is to place the configuration in hiera and just:
 
     include activemq
 
 Example hiera config:
 
     activemq::config:
-      hostname: 'locahost'
+      hostname: 'localhost'
 
     activemq::files:
       conf/activemq.xml:
