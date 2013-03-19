@@ -107,7 +107,7 @@ Values set at the activemq level as set for all instances so both the activemq1
 and activemq2 instance would get the same activemq-users.xml file.  Each
 instance would get their own activemq.xml file based on the template specified
 with instance variables (like basedir and logdir) and config variables (like
-hostname) substituted.
+hostname above) substituted.
 
 For example:
 

@@ -1,3 +1,4 @@
 0.2.0:
-  * Removed bind_address and replaced it with a config hash that can be used
-  to set variables to be used when templates are processed.
+
+* Removed bind_address and replaced it with a config hash to set variables
+that are used when templates are processed.
