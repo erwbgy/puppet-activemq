@@ -1,8 +1,8 @@
 #!/bin/bash
 exec 2>&1
-export CATALINA_HOME=<%= @product_dir %>
-export CATALINA_BASE=$CATALINA_HOME
-mkdir -p $CATALINA_BASE/temp
-export CATALINA_OPTS="-Xms<%= @min_mem %> -Xmx<%= @max_mem %> <%= @java_opts %>"
+export ACTIVEMQ_HOME=<%= @product_dir %>
+export ACTIVEMQ_BASE=$ACTIVEMQ_HOME
+mkdir -p $ACTIVEMQ_BASE/temp
+export ACTIVEMQ_OPTS="-Xms<%= @min_mem %> -Xmx<%= @max_mem %> <%= @java_opts %>"
 export JAVA_HOME=<%= @java_home %>
-exec $CATALINA_HOME/bin/catalina.sh run
+exec $ACTIVEMQ_HOME/bin/activemq console

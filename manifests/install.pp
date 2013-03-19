@@ -5,7 +5,7 @@ define activemq::install (
   $version,
   $workspace,
 ) {
-  $tarball = "apache-activemq-${version}.tar.gz"
+  $tarball = "apache-activemq-${version}-bin.tar.gz"
   $subdir  = "apache-activemq-${version}"
   if ! defined(Package['tar']) {
     package { 'tar': ensure => installed }

@@ -1,6 +1,6 @@
 # puppet-activemq
 
-Puppet module to install Apache Tomcat and run instances as Runit services
+Puppet module to install Apache ActiveMQ and run instances as Runit services
 under one or more users.
 
 The recommended usage is to place the configuration is hiera and just:
@@ -69,13 +69,13 @@ Example hiera config:
 
 ## activemq::instance parameters
 
-*title*: The user the Tomcat instance runs as
+*title*: The user the ActiveMQ instance runs as
 
 Plus all of the parameters specified in 'activemq parameters' above
 
 ## Config files
 
-Files or templates for each of the Tomcat instances can be delivered via
+Files or templates for each of the ActiveMQ instances can be delivered via
 Puppet.  The former are delivered as-is while the latter are processed as ERB
 templates before being delivered.
 
