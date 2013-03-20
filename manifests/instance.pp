@@ -16,6 +16,9 @@ define activemq::instance (
   $version          = $::activemq::version,
   $workspace        = $::activemq::workspace,
 ) {
+  if ! $version {
+    fail("activemq version MUST be set")
+  }
   $user        = $title
   $product     = 'apache-activemq'
   $product_dir = "${basedir}/${product}-${version}"

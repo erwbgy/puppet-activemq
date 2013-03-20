@@ -1,5 +1,5 @@
 class activemq (
-  $version,
+  $version          = undef,
   $basedir          = '/opt/activemq',
   $config           = {},
   $config_file      = 'xbean:conf/activemq.xml',

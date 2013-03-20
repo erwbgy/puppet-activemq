@@ -11,6 +11,9 @@
 * Modify the activemq start script to ensure that we have one process running
 in the foreground
 
+* Fixed bug where setting the version at the instance level still resulted in
+an error that the version was not set.
+
 0.2.0:
 
 * Removed bind_address and replaced it with a config hash to set variables
