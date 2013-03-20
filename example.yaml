@@ -3,6 +3,8 @@ activemq::config:
 
 activemq::config_file: 'xbean:conf/activemq-throughput-np.xml'
 
+activemq::cpu_affinity: '0,1'
+
 activemq::files:
   conf/activemq.xml:
     mode:     '0440'
