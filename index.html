@@ -46,6 +46,10 @@ under one or more users.</p>
 <pre><code>activemq::config:
   hostname: 'localhost'
 
+activemq::config_file: 'xbean:conf/activemq.xml'
+
+activemq::cpu_affinity: '0,1'
+
 activemq::files:
   conf/activemq.xml:
     mode:     '0440'
@@ -82,6 +86,11 @@ activemq::instances:
 <p><em>config</em>: A hash of additional configuration variables that will be set
 when templates are processed.</p>
 
+<p><em>config_file</em>: The configuration file to use. Default: 'xbean:conf/activemq.xml'</p>
+
+<p><em>cpu_affinity</em>: Enable CPU affinity to be set to only run processes on specific
+CPU cores - for example '0,1' to only run processes on the first two cores.</p>
+
 <p><em>files</em>: A hash of configuration files to install - see below</p>
 
 <p><em>group</em>: The user''s primary group. Default: 'activemq',</p>
@@ -112,7 +121,7 @@ when templates are processed.</p>
 
 <p>Plus all of the parameters specified in 'activemq parameters' above</p>
 
-<h2>Config files</h2>
+<h2>Config files and templates</h2>
 
 <p>Files or templates for each of the ActiveMQ instances can be delivered via
 Puppet.  The former are delivered as-is while the latter are processed as ERB
