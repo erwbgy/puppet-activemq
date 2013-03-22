@@ -1,5 +1,5 @@
 name    'erwbgy-activemq'
-version '0.3.0'
+version '0.4.0'
 source 'https://github.com/erwbgy/puppet-activemq.git'
 author 'erwbgy'
 license 'Apache License, Version 2.0'

@@ -1,3 +1,12 @@
+0.4.0:
+
+* Added a check script to determine when the instance is up by running lsof to
+check that the process is listening on the specified host and port.
+
+* Disable JMX by default as it binds to a wildcard address (add
+-Dcom.sun.management.jmxremote to java_opts if you want it or just use
+jolokia)
+
 0.3.0:
 
 * Allow the configuration file to be specified and pass it on the command-line
