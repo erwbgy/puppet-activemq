@@ -10,6 +10,8 @@ activemq::files:
     mode:     '0440'
     source:   'puppet:///files/activemq/myapp/activemq.xml'
 
+activemq::jolokia_version: '1.1.1'
+
 activemq::templates:
   conf/activemq-users.xml:
     mode:     '0440'
@@ -28,9 +30,12 @@ activemq::version:   '5.8.0'
 
 activemq::instances:
   activemq1:
-    basedir:      '/apps/activemq1'
-    logdir:       '/apps/activemq1/logs'
+    basedir:         '/apps/activemq1'
+    logdir:          '/apps/activemq1/logs'
+    jolokia:         'true'
+    jolokia_address: %{ipaddress_eth0_1}
+    jolokia_port:    '8778'
   activemq2:
-    basedir:      '/apps/activemq2'
-    logdir:       '/apps/activemq2/logs'
+    basedir:         '/apps/activemq2'
+    logdir:          '/apps/activemq2/logs'
 

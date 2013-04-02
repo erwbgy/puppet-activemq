@@ -8,6 +8,10 @@ define activemq::instance (
   $group            = $::activemq::group,
   $java_home        = $::activemq::java_home,
   $java_opts        = $::activemq::java_opts,
+  $jolokia          = $::activemq::jolokia,
+  $jolokia_address  = $::activemq::jolokia_address,
+  $jolokia_port     = $::activemq::jolokia_port,
+  $jolokia_version  = $::activemq::jolokia_version,
   $logdir           = $::activemq::logdir,
   $max_mem          = $::activemq::max_mem,
   $min_mem          = $::activemq::min_mem,
@@ -17,7 +21,7 @@ define activemq::instance (
   $workspace        = $::activemq::workspace,
 ) {
   if ! $version {
-    fail("activemq version MUST be set")
+    fail('activemq version MUST be set')
   }
   $user        = $title
   $product     = 'apache-activemq'
@@ -38,11 +42,15 @@ define activemq::instance (
   }
 
   activemq::install { "${user}-${product}":
-    version     => $version,
-    user        => $user,
-    group       => $group,
-    basedir     => $basedir,
-    workspace   => $workspace,
+    basedir         => $basedir,
+    group           => $group,
+    jolokia         => $jolokia,
+    jolokia_address => $jolokia_address,
+    jolokia_port    => $jolokia_port,
+    jolokia_version => $jolokia_version,
+    user            => $user,
+    version         => $version,
+    workspace       => $workspace,
   }
 
   create_resources( 'activemq::file', $files,
@@ -56,40 +64,48 @@ define activemq::instance (
 
   create_resources( 'activemq::template', $templates,
     {
-      basedir      => $basedir,
-      config       => $config,
-      config_file  => $config_file,
-      cpu_affinity => $cpu_affinity,
-      down         => $down,
-      group        => $group,
-      java_home    => $java_home,
-      java_opts    => $java_opts,
-      logdir       => $logdir,
-      max_mem      => $max_mem,
-      min_mem      => $min_mem,
-      mode         => $mode,
-      product_dir  => $product_dir,
-      user         => $user,
-      version      => $version,
-      workspace    => $workspace,
+      basedir         => $basedir,
+      config          => $config,
+      config_file     => $config_file,
+      cpu_affinity    => $cpu_affinity,
+      down            => $down,
+      group           => $group,
+      java_home       => $java_home,
+      java_opts       => $java_opts,
+      jolokia         => $jolokia,
+      jolokia_address => $jolokia_address,
+      jolokia_port    => $jolokia_port,
+      jolokia_version => $jolokia_version,
+      logdir          => $logdir,
+      max_mem         => $max_mem,
+      min_mem         => $min_mem,
+      mode            => $mode,
+      product_dir     => $product_dir,
+      user            => $user,
+      version         => $version,
+      workspace       => $workspace,
     }
   )
 
   activemq::service { "${user}-${product}":
-    basedir      => $basedir,
-    logdir       => $logdir,
-    product      => $product,
-    user         => $user,
-    group        => $group,
-    version      => $version,
-    java_home    => $java_home,
-    java_opts    => $java_opts,
-    config       => $config,
-    config_file  => $config_file,
-    cpu_affinity => $cpu_affinity,
-    min_mem      => $min_mem,
-    max_mem      => $max_mem,
-    down         => $down,
+    basedir         => $basedir,
+    config          => $config,
+    config_file     => $config_file,
+    cpu_affinity    => $cpu_affinity,
+    down            => $down,
+    group           => $group,
+    java_home       => $java_home,
+    java_opts       => $java_opts,
+    jolokia         => $jolokia,
+    jolokia_address => $jolokia_address,
+    jolokia_port    => $jolokia_port,
+    jolokia_version => $jolokia_version,
+    logdir          => $logdir,
+    max_mem         => $max_mem,
+    min_mem         => $min_mem,
+    product         => $product,
+    user            => $user,
+    version         => $version,
   }
 
 }

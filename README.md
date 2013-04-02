@@ -31,6 +31,8 @@ Example hiera config:
     activemq::java_home: '/usr/java/jdk1.7.0_09'
     
     activemq::java_opts: '-Xms1536m -Xmx1536m -XX:MaxPermSize=512m'
+
+    activemq::jolokia_version: '1.1.1'
     
     activemq::version:   '5.8.0'
     
@@ -40,6 +42,9 @@ Example hiera config:
         config:
           hostname:   %{ipaddress_eth0_1}
         logdir:       '/apps/activemq1/logs'
+        jolokia:         'true'
+        jolokia_address: %{ipaddress_eth0_1}
+        jolokia_port:    '8778'
       activemq2:
         basedir:      '/apps/activemq2'
         logdir:       '/apps/activemq2/logs'
@@ -64,6 +69,15 @@ CPU cores - for example '0,1' to only run processes on the first two cores.
 '/usr/java/latest',
 
 *java_opts*: Additional java command-line options to pass to the startup script
+
+*jolokia*: Whether or not to install the jolokia war file and configure a
+separate service to run it. Default: false
+
+*jolokia_address*: The address that the jolokia HTTP service listens on.
+Default: 'localhost'
+
+*jolokia_port*: The port that the jolokia HTTP service listens on. Default:
+'8778'
 
 *logdir*: The base log directory. Default: '/var/logs/activemq'
 
@@ -146,6 +160,36 @@ Place the product zip files (eg. 'apache-activemq-5.8.0.tar.gz') under a
 
 then put the zip files in /var/lib/puppet/files/activemq.  Any files specified
 with the 'files' parameter can also be placed in this directory.
+
+## Monitoring
+
+The jolokia parameters enable JMX statistics to be queried over HTTP - for example:
+
+    $ curl http://localhost:8778/jolokia/read/java.lang:type=Memory/HeapMemoryUsage
+    {"timestamp":1363883323,"status":200,"request":{"mbean":"java.lang:type=Memory"
+    ," attribute":"HeapMemoryUsage","type":"read"},"value":{"max":1908932608,"commi
+    tted":1029046272,"init":1073741824,"used":155889168}}
+
+To limit what what can be accessed a jolokia-access.xml can be included in the
+war file.  This is what I do to ensure read-only access:
+
+    $ cd /var/lib/puppet/files/activemq
+    $ wget http://labs.consol.de/maven/repository/org/jolokia/jolokia-jvm/1.1.1/jolokia-jvm-1.1.1-agent.jar
+    $ vim jolokia-access.xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <restrict>
+      <commands>
+        <command>read</command>
+        <command>list</command>
+        <command>version</command>
+        <command>search</command>
+      </commands>
+      <http>
+        <method>get</method>
+        <method>post</method>
+      </http>
+    </restrict>
+    $ zip -u jolokia-jvm-1.1.1-agent.jar jolokia-access.xml
 
 ## Support
 

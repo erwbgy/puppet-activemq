@@ -7,6 +7,8 @@ check that the process is listening on the specified host and port.
 -Dcom.sun.management.jmxremote to java_opts if you want it or just use
 jolokia)
 
+* Added jolokia monitoring support.
+
 0.3.0:
 
 * Allow the configuration file to be specified and pass it on the command-line

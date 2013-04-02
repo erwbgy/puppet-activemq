@@ -1,6 +1,10 @@
 define activemq::install (
   $basedir,
   $group,
+  $jolokia,
+  $jolokia_address,
+  $jolokia_port,
+  $jolokia_version,
   $user,
   $version,
   $workspace,
@@ -35,6 +39,14 @@ define activemq::install (
     creates     => "${basedir}/${subdir}",
     notify      => Exec["activemq-fix-ownership-${user}"],
     require     => [ File[$basedir], File["${workspace}/${tarball}"] ],
+  }
+  if $jolokia {
+    file { "${basedir}/${subdir}/lib/jolokia-jvm-${jolokia_version}-agent.jar":
+      ensure  => present,
+      mode    => '0444',
+      source  => "puppet:///files/activemq/jolokia-jvm-${jolokia_version}-agent.jar",
+      require => Exec["activemq-unpack-${user}"],
+    }
   }
   exec { "activemq-fix-ownership-${user}":
     command     => "/bin/chown -R ${user}:${group} ${basedir}/${subdir}",

@@ -3,7 +3,7 @@ exec 2>&1
 export ACTIVEMQ_HOME=<%= @product_dir %>
 export ACTIVEMQ_BASE=$ACTIVEMQ_HOME
 mkdir -p $ACTIVEMQ_BASE/temp
-export ACTIVEMQ_OPTS="-Xms<%= @min_mem %> -Xmx<%= @max_mem %> -Djava.io.tmpdir=$ACTIVEMQ_BASE/temp <%= @java_opts %>"
+export ACTIVEMQ_OPTS="-Xms<%= @min_mem %> -Xmx<%= @max_mem %> -Djava.io.tmpdir=$ACTIVEMQ_BASE/temp <%= @java_opts %><% if @jolokia %> -javaagent:$ACTIVEMQ_HOME/lib/jolokia-jvm-<%= @jolokia_version %>-agent.jar=host=<%= @jolokia_address %>,port=<%= @jolokia_port %><% end %>"
 export JAVA_HOME=<%= @java_home %>
 # Ensure we have one process running in the foreground
 perl -pi -e 's/DOIT_PREFIX="sh -c "/DOIT_PREFIX="exec sh -c "/' $ACTIVEMQ_HOME/bin/activemq
