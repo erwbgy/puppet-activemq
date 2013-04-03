@@ -191,6 +191,21 @@ war file.  This is what I do to ensure read-only access:
     </restrict>
     $ zip -u jolokia-jvm-1.1.1-agent.jar jolokia-access.xml
 
+To make the ActiveMQ JMX MBeans available it is not necessary to create a JMX
+connector (and not recommended either) but JMX must be enabled - for example:
+
+    <broker ... useJmx="true" ...>
+      ...
+      <managementContext>
+        <managementContext createConnector="false"/>
+      </managementContext>
+      ...
+    </broker>
+
+Note that the elements inside broker must be in alphabetical order - for
+example managementContext must be after destinationPolicy but before
+systemUsage.
+
 ## Support
 
 License: Apache License, Version 2.0
