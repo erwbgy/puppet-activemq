@@ -1,5 +1,6 @@
 define activemq::install (
   $basedir,
+  $filestore,
   $group,
   $jolokia,
   $jolokia_address,
@@ -29,7 +30,7 @@ define activemq::install (
     file { "${workspace}/${tarball}":
       ensure  => present,
       mode    => '0444',
-      source  => "puppet:///files/activemq/${tarball}",
+      source  => "${filestore}/${tarball}",
       require => File[$workspace],
     }
   }
@@ -44,7 +45,7 @@ define activemq::install (
     file { "${basedir}/${subdir}/lib/jolokia-jvm-${jolokia_version}-agent.jar":
       ensure  => present,
       mode    => '0444',
-      source  => "puppet:///files/activemq/jolokia-jvm-${jolokia_version}-agent.jar",
+      source  => "${filestore}/jolokia-jvm-${jolokia_version}-agent.jar",
       require => Exec["activemq-unpack-${user}"],
     }
     file { "${basedir}/${subdir}/bin/connection-monitor":

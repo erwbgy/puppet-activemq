@@ -6,6 +6,7 @@ class activemq (
   $cpu_affinity     = undef,
   $down             = false,
   $files            = {},
+  $filestore        = 'puppet:///files/activemq',
   $group            = 'activemq',
   $logdir           = '/var/log/activemq',
   $java_home        = '/usr/java/latest',

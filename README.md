@@ -21,6 +21,8 @@ Example hiera config:
         mode:     '0440'
         source:   'puppet:///files/activemq/myapp/activemq.xml'
 
+    activemq::filestore: 'puppet:///files/activemq'
+
     activemq::templates:
       conf/activemq-users.xml:
         mode:     '0440'
@@ -62,6 +64,9 @@ when templates are processed.
 CPU cores - for example '0,1' to only run processes on the first two cores.
 
 *files*: A hash of configuration files to install - see below
+
+*filestore*: The Puppet filestore location where the ActiveMQ tarball and Jolokia
+agent jar file are downloaded from. Default: 'puppet:///files/activemq'
 
 *group*: The user''s primary group. Default: 'activemq',
 
@@ -159,7 +164,10 @@ Place the product zip files (eg. 'apache-activemq-5.8.0.tar.gz') under a
     path /var/lib/puppet/files
 
 then put the zip files in /var/lib/puppet/files/activemq.  Any files specified
-with the 'files' parameter can also be placed in this directory.
+with the 'files' parameter can also be placed in this directory, as can the
+Jolokia agent jar file.
+
+This location can be changed by setting the 'filestore' parameter.
 
 ## Monitoring
 
@@ -207,7 +215,7 @@ example managementContext must be after destinationPolicy but before
 systemUsage.
 
 If jolokia support is enabled then connection and queue monitoring scripts are
-run from cron writing to local log files.
+run from cron every minute writing to local log files.
 
 ## Support
 

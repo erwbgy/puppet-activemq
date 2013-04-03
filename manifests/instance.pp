@@ -5,6 +5,7 @@ define activemq::instance (
   $cpu_affinity     = $::activemq::cpu_affinity,
   $down             = $::activemq::down,
   $files            = $::activemq::files,
+  $filestore        = $::activemq::filestore,
   $group            = $::activemq::group,
   $java_home        = $::activemq::java_home,
   $java_opts        = $::activemq::java_opts,
@@ -43,6 +44,7 @@ define activemq::instance (
 
   activemq::install { "${user}-${product}":
     basedir         => $basedir,
+    filestore       => $filestore,
     group           => $group,
     jolokia         => $jolokia,
     jolokia_address => $jolokia_address,
@@ -55,6 +57,7 @@ define activemq::instance (
 
   create_resources( 'activemq::file', $files,
     {
+      filestore   => $filestore,
       group       => $group,
       mode        => $mode,
       product_dir => $product_dir,
@@ -69,6 +72,7 @@ define activemq::instance (
       config_file     => $config_file,
       cpu_affinity    => $cpu_affinity,
       down            => $down,
+      filestore       => $filestore,
       group           => $group,
       java_home       => $java_home,
       java_opts       => $java_opts,
@@ -93,6 +97,7 @@ define activemq::instance (
     config_file     => $config_file,
     cpu_affinity    => $cpu_affinity,
     down            => $down,
+    filestore       => $filestore,
     group           => $group,
     java_home       => $java_home,
     java_opts       => $java_opts,

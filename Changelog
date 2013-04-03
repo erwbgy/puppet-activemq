@@ -1,7 +1,10 @@
 0.5.0:
 
 * If jolokia is enabled then run connection and queue monitoring scripts from
-cron writing to a local log file
+cron every minute writing to local log files
+
+* Make the file store location of the ActiveMQ tarball and Jolokia agent jar
+file configurable.
 
 0.4.0:
 

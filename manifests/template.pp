@@ -4,6 +4,7 @@ define activemq::template(
   $config_file,
   $cpu_affinity,
   $down,
+  $filestore,
   $group,
   $java_home,
   $java_opts,

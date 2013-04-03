@@ -1,4 +1,5 @@
 define activemq::file (
+  $filestore,
   $group,
   $mode,
   $product_dir,

@@ -4,6 +4,7 @@ define activemq::service (
   $config_file,
   $cpu_affinity,
   $down,
+  $filestore,
   $group,
   $logdir,
   $java_home,
