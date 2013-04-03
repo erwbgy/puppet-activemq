@@ -48,6 +48,24 @@ define activemq::install (
       source  => "${filestore}/jolokia-jvm-${jolokia_version}-agent.jar",
       require => Exec["activemq-unpack-${user}"],
     }
+    case $::operatingsystem {
+      'RedHat', 'CentOS', 'OracleLinux': {
+        if ! defined(Package['perl-libwww-perl']) {
+          package { 'perl-libwww-perl':  ensure => installed }
+        }
+        if versioncmp($::operatingsystemrelease, '6.0') > 0 {
+          if ! defined(Package['perl-JSON']) {
+            package { 'perl-JSON':  ensure => installed }
+          }
+        }
+        else {
+          warning('Install the Perl JSON module manually')
+        }
+      }
+      default: {
+        warning('Install the Perl libwww and JSON modules manually')
+      }
+    }
     file { "${basedir}/${subdir}/bin/connection-monitor":
       ensure  => present,
       mode    => '0555',
