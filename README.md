@@ -206,6 +206,9 @@ Note that the elements inside broker must be in alphabetical order - for
 example managementContext must be after destinationPolicy but before
 systemUsage.
 
+If jolokia support is enabled then connection and queue monitoring scripts are
+run from cron writing to local log files.
+
 ## Support
 
 License: Apache License, Version 2.0

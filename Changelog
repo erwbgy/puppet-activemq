@@ -1,3 +1,8 @@
+0.5.0:
+
+* If jolokia is enabled then run connection and queue monitoring scripts from
+cron writing to a local log file
+
 0.4.0:
 
 * Added a check script to determine when the instance is up by running lsof to

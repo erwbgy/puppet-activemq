@@ -17,7 +17,7 @@ else {
   $mon++;
   $mon  = sprintf("%02d",$mon);
   $mday = sprintf("%02d",$mday);
-  open(OUTPUT, ">>queue-${year}-${mon}-${mday}.log") or die "$!\n";
+  open(OUTPUT, ">><%= @logdir %>/queue-${year}-${mon}-${mday}.log") or die "$!\n";
   my $json = JSON->new();
   $json->canonical(1);
   my $content = $json->decode($res->content);

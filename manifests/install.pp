@@ -47,6 +47,28 @@ define activemq::install (
       source  => "puppet:///files/activemq/jolokia-jvm-${jolokia_version}-agent.jar",
       require => Exec["activemq-unpack-${user}"],
     }
+    file { "${basedir}/${subdir}/bin/connection-monitor":
+      ensure  => present,
+      mode    => '0555',
+      content => template('activemq/connection-monitor.erb'),
+      require => Exec["activemq-unpack-${user}"],
+    }
+    file { "${basedir}/${subdir}/bin/queue-monitor":
+      ensure  => present,
+      mode    => '0555',
+      content => template('activemq/queue-monitor.erb'),
+      require => Exec["activemq-unpack-${user}"],
+    }
+    cron { 'activemq-connection-monitor':
+      command => "${basedir}/${subdir}/bin/connection-monitor",
+      user    => $user,
+      require => File["${basedir}/${subdir}/bin/connection-monitor"],
+    }
+    cron { 'activemq-queue-monitor':
+      command => "${basedir}/${subdir}/bin/queue-monitor",
+      user    => $user,
+      require => File["${basedir}/${subdir}/bin/queue-monitor"],
+    }
   }
   exec { "activemq-fix-ownership-${user}":
     command     => "/bin/chown -R ${user}:${group} ${basedir}/${subdir}",

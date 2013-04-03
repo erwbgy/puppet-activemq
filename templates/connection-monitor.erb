@@ -1,0 +1,34 @@
+#!/usr/bin/env perl
+use JSON;
+use LWP::UserAgent;
+use YAML;
+use warnings;
+use strict;
+
+my $ua  = LWP::UserAgent->new;
+my $req = HTTP::Request->new(GET => 'http://<%= @jolokia_address %>:<%= @jolokia_port %>/jolokia/read/org.apache.activemq:Type=Connection,Connection=*,*');
+my $res = $ua->request($req);
+
+unless ($res->is_success) {
+  warn $res->status_line, "\n";
+}
+else {
+  my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+  $year += 1900;
+  $mon++;
+  $mon  = sprintf("%02d",$mon);
+  $mday = sprintf("%02d",$mday);
+  open(OUTPUT, ">><%= @logdir %>/connection-${year}-${mon}-${mday}.log") or die "$!\n";
+  my $json = JSON->new();
+  $json->canonical(1);
+  my $content = $json->decode($res->content);
+  my $timestamp = $content->{'timestamp'};
+  foreach my $entry (sort keys %{ $content->{'value'} }) {
+    $entry =~ /Connection=(.*?),/;
+    my $connection = $1;
+    $content->{'value'}{$entry}{'Connection'} = $connection;
+    $content->{'value'}{$entry}{'Timestamp'}  = $timestamp;
+    print OUTPUT $json->encode($content->{'value'}{$entry}) . "\n";
+  }
+  close(OUTPUT);
+}
