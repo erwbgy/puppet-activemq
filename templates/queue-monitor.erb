@@ -27,6 +27,7 @@ else {
   $output->{'@source'} = $url;
   $output->{'@source_host'} = hostname;
   $output->{'@source_path'} = $logfile;
+  $output->{'@tags'} = [ 'activemq-queue' ];
 
   my $json = JSON->new();
   $json->canonical(1);
@@ -38,15 +39,14 @@ else {
   open(OUTPUT, ">>$logfile") or die "$!\n";
 
   foreach my $entry (sort keys %{ $content->{'value'} }) {
-    $entry =~ /Destination=(.*?),/;
-    my $queue = $1;
-    # Timestamp;Destination;AverageEnqueueTime;ConsumerCount;CursorFull;CursorMemoryUsage;CursorPercentUsage;DequeueCount;DispatchCount;EnqueueCount;ExpiredCount;InFlightCount;MemoryLimit;MemoryPercentUsage;MaxEnqueueTime;MemoryUsagePortion;MinEnqueueTime;Name;ProducerCount;ProducerFlowControl;QueueSize;UseCache
+    # Timestamp;Hostname;Name;AverageEnqueueTime;ConsumerCount;CursorFull;CursorMemoryUsage;CursorPercentUsage;DequeueCount;DispatchCount;EnqueueCount;ExpiredCount;InFlightCount;MemoryLimit;MemoryPercentUsage;MaxEnqueueTime;MemoryUsagePortion;MinEnqueueTime;ProducerCount;ProducerFlowControl;QueueSize;UseCache
     my @message;
     push @message, $timestamp;
-    push @message, $queue;
-    $output->{'@fields'}{'Timestamp'}   = $timestamp;
-    $output->{'@fields'}{'Destination'} = $queue;
+    push @message, hostname;
+    $output->{'@fields'}{'Timestamp'} = $timestamp;
+    $output->{'@fields'}{'Hostname'}  = hostname;
     foreach (
+      'Name',
       'AverageEnqueueTime',
       'ConsumerCount',
       'CursorFull',
@@ -62,7 +62,6 @@ else {
       'MaxEnqueueTime',
       'MemoryUsagePortion',
       'MinEnqueueTime',
-      'Name',
       'ProducerCount',
       'ProducerFlowControl',
       'QueueSize',
