@@ -10,6 +10,7 @@ define activemq::template(
   $java_opts,
   $jolokia,
   $jolokia_address,
+  $jolokia_cron,
   $jolokia_port,
   $jolokia_version,
   $logdir,

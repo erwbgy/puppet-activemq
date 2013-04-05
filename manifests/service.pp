@@ -11,6 +11,7 @@ define activemq::service (
   $java_opts,
   $jolokia,
   $jolokia_address,
+  $jolokia_cron,
   $jolokia_port,
   $jolokia_version,
   $max_mem,
@@ -44,5 +45,17 @@ define activemq::service (
     group   => $group,
     replace => false,
     require => Runit::Service["${user}-${product}"],
+  }
+  if $jolokia_cron {
+   cron { 'activemq-connection-monitor':
+      command => "${basedir}/${subdir}/bin/connection-monitor",
+      user    => $user,
+      require => File["${basedir}/${subdir}/bin/connection-monitor"],
+    }
+    cron { 'activemq-queue-monitor':
+      command => "${basedir}/${subdir}/bin/queue-monitor",
+      user    => $user,
+      require => File["${basedir}/${subdir}/bin/queue-monitor"],
+    }
   }
 }

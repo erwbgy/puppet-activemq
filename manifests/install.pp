@@ -4,6 +4,7 @@ define activemq::install (
   $group,
   $jolokia,
   $jolokia_address,
+  $jolokia_cron,
   $jolokia_port,
   $jolokia_version,
   $user,
@@ -77,16 +78,6 @@ define activemq::install (
       mode    => '0555',
       content => template('activemq/queue-monitor.erb'),
       require => Exec["activemq-unpack-${user}"],
-    }
-    cron { 'activemq-connection-monitor':
-      command => "${basedir}/${subdir}/bin/connection-monitor",
-      user    => $user,
-      require => File["${basedir}/${subdir}/bin/connection-monitor"],
-    }
-    cron { 'activemq-queue-monitor':
-      command => "${basedir}/${subdir}/bin/queue-monitor",
-      user    => $user,
-      require => File["${basedir}/${subdir}/bin/queue-monitor"],
     }
   }
   exec { "activemq-fix-ownership-${user}":

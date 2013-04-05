@@ -13,6 +13,7 @@ class activemq (
   $java_opts        = '',
   $jolokia          = false,
   $jolokia_address  = 'localhost',
+  $jolokia_cron     = true,
   $jolokia_port     = '8778',
   $jolokia_version  = '1.1.1',
   $max_mem          = '2048m',

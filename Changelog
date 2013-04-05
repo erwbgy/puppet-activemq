@@ -6,6 +6,9 @@ cron every minute writing to local log files
 * Make the file store location of the ActiveMQ tarball and Jolokia agent jar
 file configurable.
 
+* Provide sample lumberjack log shipping run script and corresponding logstash
+configuration
+
 0.4.0:
 
 * Added a check script to determine when the instance is up by running lsof to

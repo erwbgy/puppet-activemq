@@ -81,6 +81,9 @@ separate service to run it. Default: false
 *jolokia_address*: The address that the jolokia HTTP service listens on.
 Default: 'localhost'
 
+*jolokia_cron*: Whether or not to install cron jobs to run the Jolokia JMX
+monitoring scripts every minute writing to local log files. Default: 'true'
+
 *jolokia_port*: The port that the jolokia HTTP service listens on. Default:
 '8778'
 
