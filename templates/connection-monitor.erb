@@ -41,7 +41,7 @@ else {
   foreach my $entry (sort keys %{ $content->{'value'} }) {
     $entry =~ /Connection=(.*?),/;
     my $connection = $1;
-    # Timestamp;Hostname;Active;Blocked;Connected;Connection;RemoteAddress;Slow
+    # Timestamp;Hostname;Connection;Active;Blocked;Connected;RemoteAddress;Slow
     my @message;
     push @message, $timestamp;
     push @message, hostname;
