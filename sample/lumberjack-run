@@ -1,0 +1,9 @@
+#!/bin/bash
+xport PATH=/opt/lumberjack/bin:$PATH
+exec lumberjack.sh \
+  --field app=poddsv3 \
+  --ssl-ca-path /apps/activemq1/cert.pem \
+  --host 10.0.0.1 \
+  --port 5543 \
+  /apps/activemq1/logs/connection-*.log \
+  /apps/activemq1/logs/queue-*.log
