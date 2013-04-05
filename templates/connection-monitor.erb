@@ -1,11 +1,15 @@
 #!/usr/bin/env perl
 use JSON;
 use LWP::UserAgent;
+use POSIX qw(strftime);
+use Sys::Hostname;
 use warnings;
 use strict;
 
+my $url = 'http://<%= @jolokia_address %>:<%= @jolokia_port %>/jolokia/read/org.apache.activemq:Type=Connection,Connection=*,*';
+
 my $ua  = LWP::UserAgent->new;
-my $req = HTTP::Request->new(GET => 'http://<%= @jolokia_address %>:<%= @jolokia_port %>/jolokia/read/org.apache.activemq:Type=Connection,Connection=*,*');
+my $req = HTTP::Request->new(GET => $url);
 my $res = $ua->request($req);
 
 unless ($res->is_success) {
@@ -17,17 +21,46 @@ else {
   $mon++;
   $mon  = sprintf("%02d",$mon);
   $mday = sprintf("%02d",$mday);
-  open(OUTPUT, ">><%= @logdir %>/connection-${year}-${mon}-${mday}.log") or die "$!\n";
+  my $logfile = "<%= @logdir %>/connection-${year}-${mon}-${mday}.log";
+
+  my $output;
+  $output->{'@source'} = $url;
+  $output->{'@source_host'} = hostname;
+  $output->{'@source_path'} = $logfile;
+  $output->{'@tags'} = [ 'activemq-connection' ];
+
   my $json = JSON->new();
   $json->canonical(1);
   my $content = $json->decode($res->content);
-  my $timestamp = $content->{'timestamp'};
+
+  my $timestamp = strftime("%F %T", localtime($content->{'timestamp'}));
+  $output->{'@timestamp'} = $timestamp;
+
+  open(OUTPUT, ">>$logfile") or die "$!\n";
+
   foreach my $entry (sort keys %{ $content->{'value'} }) {
     $entry =~ /Connection=(.*?),/;
     my $connection = $1;
-    $content->{'value'}{$entry}{'Connection'} = $connection;
-    $content->{'value'}{$entry}{'Timestamp'}  = $timestamp;
-    print OUTPUT $json->encode($content->{'value'}{$entry}) . "\n";
+    # Timestamp;Hostname;Active;Blocked;Connected;Connection;RemoteAddress;Slow
+    my @message;
+    push @message, $timestamp;
+    push @message, hostname;
+    push @message, $connection;
+    $output->{'@fields'}{'Timestamp'}  = $timestamp;
+    $output->{'@fields'}{'Hostname'}   = hostname;
+    $output->{'@fields'}{'Connection'} = $connection;
+    foreach (
+      'Active',
+      'Blocked',
+      'Connected',
+      'RemoteAddress',
+      'Slow',
+    ) {
+      push @message, $content->{'value'}{$entry}{$_};
+      $output->{'@fields'}{$_} = $content->{'value'}{$entry}{$_};
+    }
+    $output->{'@message'} = join(';', @message);
+    print OUTPUT $json->encode($output) . "\n"
   }
   close(OUTPUT);
 }
