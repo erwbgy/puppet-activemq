@@ -1,5 +1,6 @@
 #!/bin/bash
 exec 2>&1
+ulimit -n <%= @ulimit_nofile %>
 export ACTIVEMQ_HOME=<%= @product_dir %>
 export ACTIVEMQ_BASE=$ACTIVEMQ_HOME
 mkdir -p $ACTIVEMQ_BASE/temp

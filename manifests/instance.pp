@@ -20,6 +20,7 @@ define activemq::instance (
   $mode             = $::activemq::mode,
   $templates        = $::activemq::templates,
   $version          = $::activemq::version,
+  $ulimit_nofile    = $::activemq::ulimit_nofile,
   $workspace        = $::activemq::workspace,
 ) {
   if ! $version {
@@ -52,6 +53,7 @@ define activemq::instance (
     jolokia_cron    => $jolokia_cron,
     jolokia_port    => $jolokia_port,
     jolokia_version => $jolokia_version,
+    ulimit_nofile   => $ulimit_nofile,
     user            => $user,
     version         => $version,
     workspace       => $workspace,
@@ -88,6 +90,7 @@ define activemq::instance (
       min_mem         => $min_mem,
       mode            => $mode,
       product_dir     => $product_dir,
+      ulimit_nofile   => $ulimit_nofile,
       user            => $user,
       version         => $version,
       workspace       => $workspace,
@@ -113,6 +116,7 @@ define activemq::instance (
     max_mem         => $max_mem,
     min_mem         => $min_mem,
     product         => $product,
+    ulimit_nofile   => $ulimit_nofile,
     user            => $user,
     version         => $version,
   }

@@ -22,6 +22,7 @@ class activemq (
   $remove_docs      = true,
   $remove_examples  = true,
   $templates        = {},
+  $ulimit_nofile    = '$(ulimit -H -n)',
   $workspace        = '/root/activemq',
 ) {
   $activemq = hiera_hash('activemq::instances', undef)

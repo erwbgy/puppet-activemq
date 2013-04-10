@@ -17,6 +17,7 @@ define activemq::service (
   $max_mem,
   $min_mem,
   $product,
+  $ulimit_nofile,
   $user,
   $version,
 ) {

@@ -97,6 +97,10 @@ monitoring scripts every minute writing to local log files. Default: 'true'
 
 *templates*: A hash of configuration templates to process and install - see below
 
+*ulimit_nofile*: The maximum number of open file descriptors the java process
+is allowed.  Default is '$(ulimit -H -n)' which sets the value to the hard
+limit in /etc/security/limits.conf (or equivalent) for the user.
+
 *version*: The version of the product to install (eg. 5.8.0). **Required**.
 
 *workspace*: A temporary directory to unpack install tarballs into. Default:

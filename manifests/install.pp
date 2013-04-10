@@ -9,6 +9,7 @@ define activemq::install (
   $jolokia_version,
   $user,
   $version,
+  $ulimit_nofile,
   $workspace,
 ) {
   $tarball = "apache-activemq-${version}-bin.tar.gz"
