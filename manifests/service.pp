@@ -48,14 +48,14 @@ define activemq::service (
   }
   if $jolokia_cron {
    cron { 'activemq-connection-monitor':
-      command => "${basedir}/${subdir}/bin/connection-monitor",
+      command => "${basedir}/${product}-${version}/bin/connection-monitor",
       user    => $user,
-      require => File["${basedir}/${subdir}/bin/connection-monitor"],
+      require => File["${basedir}/${product}-${version}/bin/connection-monitor"],
     }
     cron { 'activemq-queue-monitor':
-      command => "${basedir}/${subdir}/bin/queue-monitor",
+      command => "${basedir}/${product}-${version}/bin/queue-monitor",
       user    => $user,
-      require => File["${basedir}/${subdir}/bin/queue-monitor"],
+      require => File["${basedir}/${product}-${version}/bin/queue-monitor"],
     }
   }
 }
