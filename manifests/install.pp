@@ -2,11 +2,13 @@ define activemq::install (
   $basedir,
   $filestore,
   $group,
+  $java_home,
   $jolokia,
   $jolokia_address,
   $jolokia_cron,
   $jolokia_port,
   $jolokia_version,
+  $logdir,
   $user,
   $version,
   $ulimit_nofile,
@@ -89,5 +91,13 @@ define activemq::install (
     ensure  => link,
     target  => $subdir,
     require => File[$basedir],
+  }
+  file { "${product_dir}/bin/thread_dump":
+    ensure  => present,
+    mode    => '0555',
+    owner   => $user,
+    group   => $group,
+    content => template('activemq/thread_dump.erb'),
+    require => Exec["activemq-unpack-${user}"],
   }
 }

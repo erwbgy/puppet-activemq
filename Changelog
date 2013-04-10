@@ -1,3 +1,7 @@
+0.6.0:
+
+* Added a script to easily do a thread dump using jstack
+
 0.5.0:
 
 * If jolokia is enabled then run connection and queue monitoring scripts from
