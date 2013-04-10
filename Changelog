@@ -7,7 +7,10 @@ cron every minute writing to local log files
 file configurable.
 
 * Provide sample lumberjack log shipping run script and corresponding logstash
-configuration
+configuration.
+
+* Make the maximum number of open file descriptors configurable with the
+default set to the hard limit.
 
 0.4.0:
 
