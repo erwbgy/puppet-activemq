@@ -48,12 +48,12 @@ define activemq::service (
     require => Runit::Service["${user}-${product}"],
   }
   if $jolokia_cron {
-   cron { 'activemq-connection-monitor':
+    cron { "activemq-${user}-connection-monitor":
       command => "${basedir}/${product}-${version}/bin/connection-monitor",
       user    => $user,
       require => File["${basedir}/${product}-${version}/bin/connection-monitor"],
     }
-    cron { 'activemq-queue-monitor':
+    cron { "activemq-${user}-queue-monitor":
       command => "${basedir}/${product}-${version}/bin/queue-monitor",
       user    => $user,
       require => File["${basedir}/${product}-${version}/bin/queue-monitor"],

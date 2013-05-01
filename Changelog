@@ -1,3 +1,6 @@
+
+* Avoid duplicate declaration errors when running multiple instances
+
 0.6.0:
 
 * Added a script to easily do a thread dump using jstack
